@@ -32,11 +32,11 @@ const wss = new websocket.Server({server});
 let currentGame = new Game(gameStatus.gamesInitialized++);
 let connectionID = 0;
 
-if(process.argv.length < 3) {
+/*if(process.argv.length < 3) {
   console.log("Error: expected a port as argument (eg. 'node app.js 3000').");
   process.exit(1);
-}
-const port = process.argv[2];
+}*/ 
+const port = 3000;
 
 function parseForPattern(m) {
 	//patternDDDD
@@ -115,4 +115,4 @@ wss.on("connection", function (ws) {
 });
 
 
-server.listen(port);
+server.listen(process.end.PORT || port);
