@@ -1,41 +1,118 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const http = require('http');
+const express = require('express');
+const app = express();
+const websocket = require("ws");
+const Game = require("./game");
+const gameStatus = require('./stats');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+app.use(express.static(__dirname + "/public"));
+/*
+app.get('/',(req,res) => {
+  res.sendFile('index.html');
+});
+*/
+app.get('/play', (req,res)=> {
+  res.sendFile('game.html', { root: "./public" });
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+app.get("/", function(req, res) {
+  res.render("index.ejs", {
+  	shortestTime: gameStatus.shortestTime,
+    gamesInitialized: gameStatus.gamesInitialized,
+    aWins: gameStatus.aWins
+  });
 });
 
-module.exports = app;
+let websockets = {};
+
+const server = http.createServer(app);
+
+const wss = new websocket.Server({server});
+
+let currentGame = new Game(gameStatus.gamesInitialized++);
+let connectionID = 0;
+
+if(process.argv.length < 3) {
+  console.log("Error: expected a port as argument (eg. 'node app.js 3000').");
+  process.exit(1);
+}
+const port = process.argv[2];
+
+function parseForPattern(m) {
+	//patternDDDD
+	let pattern={};
+	let digits = parseInt(m.substring(7));
+	for(let i = 3; i >= 0; i--) {
+		pattern[i] = digits % 10;
+		digits = digits / 10;
+	}
+	return pattern;
+}
+
+wss.on("connection", function (ws) {
+  /*
+   * let's slow down the server response time a bit to
+   * make the change visible on the client side
+   */
+   console.log("Connection opened");
+   console.log(gameStatus.aWins);
+  const con = ws;
+  con["id"] = connectionID++;
+  const playerType = currentGame.addPlayer(con);
+
+  websockets[con["id"]] = currentGame;
+  console.log(`Player ${con["id"]} placed in game ${currentGame.id} as ${playerType}`);
+
+  con.send(playerType == "A"? "PlayerTypeA" : "PlayerTypeB");
+  if (playerType == "B" && currentGame.getPattern() != null) {
+  	con.send(currentGame.getPattern());
+  }
+  if (currentGame.hasTwoConnectedPlayers()) {
+  	currentGame = new Game(gameStatus.gamesInitialized++);
+  	console.log("Second player joined.");
+    websockets[con["id"]].playerA.send("second player joined");
+  }
+  con.on("close", function(code) {
+    console.log(`${con["id"]} disconnected ...`);
+    websockets[con["id"]].playerA.send("aborted");
+    websockets[con["id"]].playerB.send("aborted");
+  });
+  con.on("message", function incoming(message) {
+    console.log("[LOG] " + message);
+    const gameObj = websockets[con["id"]];
+    const isPlayerA = gameObj.playerA == con ? true : false;
+    if (isPlayerA) {
+      if (message.toString().startsWith("pattern")) {
+        console.log("here");
+        console.log(""+message);
+        gameObj.setPattern(""+message);
+
+        if (gameObj.hasTwoConnectedPlayers()) {
+          gameObj.playerB.send(""+message);
+        }
+      }
+    }
+    else {
+      if(message.toString().startsWith("Winner")) {
+        gameObj.setStatus(message.toString().substring(6));
+        gameObj.playerA.send(""+message);
+        gameObj.playerB.send(""+message);
+        if (message.toString().substring(6) == "A") {
+        	gameStatus.aWins++;
+        }
+      }
+    }
+    if (message.toString().startsWith("STAT")) {
+      	let crntTime = parseInt(message.toString().substring(4));
+      	if (gameStatus.shortestTime > crntTime || gameStatus.shortestTime == 0) {
+      		gameStatus.shortestTime = crntTime;
+      	}
+      }
+     if (message.toString().startsWith("Guess") || message.toString().startsWith("CHECK")) {
+     	gameObj.playerA.send(""+message);
+     }
+  });
+});
+
+
+server.listen(port);

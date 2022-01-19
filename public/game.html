@@ -1,0 +1,222 @@
+<!doctype html>
+<html>
+<head>
+	<title>Mastermind</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="icon" href="images/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="stylesheets/style.css">
+	</head>
+	<body>
+		<div id="view1" class="view1" style="display: none;">
+			<h1>Choose a colour pattern.<br>Show no mercy.</h1>
+			<div class="slot" id="prompt">
+				<img src="images/empty_slot.png" data-column="1" class="slot">
+				<img src="images/empty_slot.png" data-column="2" class="slot">
+				<img src="images/empty_slot.png" data-column="3" class="slot">
+				<img src="images/empty_slot.png" data-column="4" class="slot">
+			</div>
+			<div id="Apearls" class="pearls">
+				<img id="Ablack" height="45px" src="images/black.png">
+				<img id="Ateal" height="45px" src="images/teal.png">
+				<img id="Ayellow" height="45px" src="images/yellow.png">
+				<img id="Ared" height="45px" src="images/red.png">
+				<img id="Awhite" height="45px" src="images/white.png">
+				<img id="Agreen" height="45px" src="images/green.png">
+				<img id="Aorange" height="45px" src="images/orange.png">
+				<img id="Apurple" height="45px" src="images/purple.png">
+			</div>
+			<button id="pattern-sender">Send</button>
+			<p id="state-info-2"></p>
+		</div>
+		<div id="view2" style="display:none;" >
+		<div class="container" >
+			<div class="gameboardandpearls">
+		<div id="gameboard">
+			<div id="slots">
+				<div id="answer_row">
+					<img id="answer1" src="images/answer_slot.png">
+					<img id="answer2" src="images/answer_slot.png">
+					<img id="answer3" src="images/answer_slot.png">
+					<img id="answer4" src="images/answer_slot.png">
+				</div>
+				<div id="row1" class="row">
+					<img id="slot1_1" class="slot" src="images/empty_slot.png" data-row = "1" data-column = "1">
+					<img id="slot1_2" class="slot" src="images/empty_slot.png" data-row = "1" data-column = "2">
+					<img id="slot1_3" class="slot" src="images/empty_slot.png" data-row = "1" data-column = "3">
+					<img id="slot1_4" class="slot" src="images/empty_slot.png" data-row = "1" data-column = "4">
+					<div id="result1" class="result" style="display:inline-block;">
+						<img id="r_slot1_1_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot1_1_2" class="r_slot" src="images/empty_slot.png" height="20px">
+						<br>
+						<img id="r_slot1_2_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot1_2_2" class="r_slot" src="images/empty_slot.png" height="20px">
+					</div>
+					<button style="display: none">Check</button>
+				</div>
+				<div id="row2" class="row">
+					<img id="slot2_1" class="slot" src="images/empty_slot.png" data-row = "2" data-column = "1">
+					<img id="slot2_2" class="slot" src="images/empty_slot.png" data-row = "2" data-column = "2">
+					<img id="slot2_3" class="slot" src="images/empty_slot.png" data-row = "2" data-column = "3">
+					<img id="slot2_4" class="slot" src="images/empty_slot.png" data-row = "2" data-column = "4">
+					<div id="result2" class="result" style="display:inline-block;">
+						<img id="r_slot2_1_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot2_1_2" class="r_slot" src="images/empty_slot.png" height="20px">
+						<br>
+						<img id="r_slot2_2_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot2_2_2" class="r_slot" src="images/empty_slot.png" height="20px">
+					</div>
+					<button style="display: none">Check</button>
+				</div>
+				<div id="row3" class="row">
+					<img id="slot3_1" class="slot" src="images/empty_slot.png" data-row = "3" data-column = "1">
+					<img id="slot3_2" class="slot" src="images/empty_slot.png" data-row = "3" data-column = "2">
+					<img id="slot3_3" class="slot" src="images/empty_slot.png" data-row = "3" data-column = "3">
+					<img id="slot3_4" class="slot" src="images/empty_slot.png" data-row = "3" data-column = "4">
+					<div id="result3" class="result" style="display:inline-block;">
+						<img id="r_slot3_1_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot3_1_2" class="r_slot" src="images/empty_slot.png" height="20px">
+						<br>
+						<img id="r_slot3_2_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot3_2_2" class="r_slot" src="images/empty_slot.png" height="20px">
+					</div>
+					<button style="display: none">Check</button>
+				</div>
+				<div id="row4" class="row">
+					<img id="slot4_1" class="slot" src="images/empty_slot.png" data-row = "4" data-column = "1">
+					<img id="slot4_2" class="slot" src="images/empty_slot.png" data-row = "4" data-column = "2">
+					<img id="slot4_3" class="slot" src="images/empty_slot.png" data-row = "4" data-column = "3">
+					<img id="slot4_4" class="slot" src="images/empty_slot.png" data-row = "4" data-column = "4">
+					<div id="result4" class="result" style="display:inline-block;">
+						<img id="r_slot4_1_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot4_1_2" class="r_slot" src="images/empty_slot.png" height="20px">
+						<br>
+						<img id="r_slot4_2_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot4_2_2" class="r_slot" src="images/empty_slot.png" height="20px">
+					</div>
+					<button style="display: none">Check</button>
+				</div>
+				<div id="row5" class="row">
+					<img id="slot5_1" class="slot" src="images/empty_slot.png" data-row = "5" data-column = "1">
+					<img id="slot5_2" class="slot" src="images/empty_slot.png" data-row = "5" data-column = "2">
+					<img id="slot5_3" class="slot" src="images/empty_slot.png" data-row = "5" data-column = "3">
+					<img id="slot5_4" class="slot" src="images/empty_slot.png" data-row = "5" data-column = "4">
+					<div id="result5" class="result" style="display:inline-block;">
+						<img id="r_slot5_1_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot5_1_2" class="r_slot" src="images/empty_slot.png" height="20px">
+						<br>
+						<img id="r_slo5t_2_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot5_2_2" class="r_slot" src="images/empty_slot.png" height="20px">
+					</div>
+					<button style="display: none">Check</button>
+				</div>
+				<div id="row6" class="row">
+					<img id="slot6_1" class="slot" src="images/empty_slot.png" data-row = "6" data-column = "1">
+					<img id="slot6_2" class="slot" src="images/empty_slot.png" data-row = "6" data-column = "2">
+					<img id="slot6_3" class="slot" src="images/empty_slot.png" data-row = "6" data-column = "3">
+					<img id="slot6_4" class="slot" src="images/empty_slot.png" data-row = "6" data-column = "4">
+					<div id="result6" class="result" style="display:inline-block;">
+						<img id="r_slot6_1_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot6_1_2" class="r_slot" src="images/empty_slot.png" height="20px">
+						<br>
+						<img id="r_slot6_2_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot6_2_2" class="r_slot" src="images/empty_slot.png" height="20px">
+					</div>
+					<button style="display: none">Check</button>
+				</div>
+				<div id="row7" class="row">
+					<img id="slot7_1" class="slot" src="images/empty_slot.png" data-row = "7" data-column = "1">
+					<img id="slot7_2" class="slot" src="images/empty_slot.png" data-row = "7" data-column = "2">
+					<img id="slot7_3" class="slot" src="images/empty_slot.png" data-row = "7" data-column = "3">
+					<img id="slot7_4" class="slot" src="images/empty_slot.png" data-row = "7" data-column = "4">
+					<div id="result7" class="result" style="display:inline-block;">
+						<img id="r_slot7_1_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot7_1_2" class="r_slot" src="images/empty_slot.png" height="20px">
+						<br>
+						<img id="r_slot7_2_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot7_2_2" class="r_slot" src="images/empty_slot.png" height="20px">
+					</div>
+					<button style="display: none">Check</button>
+				</div>
+				<div id="row8" class="row">
+					<img id="slot8_1" class="slot" src="images/empty_slot.png" data-row = "8" data-column = "1">
+					<img id="slot8_2" class="slot" src="images/empty_slot.png" data-row = "8" data-column = "2">
+					<img id="slot8_3" class="slot" src="images/empty_slot.png" data-row = "8" data-column = "3">
+					<img id="slot8_4" class="slot" src="images/empty_slot.png" data-row = "8" data-column = "4">
+					<div id="result8" class="result" style="display:inline-block;">
+						<img id="r_slot8_1_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot8_1_2" class="r_slot" src="images/empty_slot.png" height="20px">
+						<br>
+						<img id="r_slot8_2_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot8_2_2" class="r_slot" src="images/empty_slot.png" height="20px">
+					</div>
+					<button style="display: none">Check</button>
+				</div>
+				<div id="row9" class="row">
+					<img id="slot9_1" class="slot" src="images/empty_slot.png" data-row = "9" data-column = "1">
+					<img id="slot9_2" class="slot" src="images/empty_slot.png" data-row = "9" data-column = "2">
+					<img id="slot9_3" class="slot" src="images/empty_slot.png" data-row = "9" data-column = "3">
+					<img id="slot9_4" class="slot" src="images/empty_slot.png" data-row = "9" data-column = "4">
+					<div id="result9" class="result" style="display:inline-block;">
+						<img id="r_slot9_1_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot9_1_2" class="r_slot" src="images/empty_slot.png" height="20px">
+						<br>
+						<img id="r_slot9_2_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot9_2_2" class="r_slot" src="images/empty_slot.png" height="20px">
+					</div>
+					<button style="display: none">Check</button>
+				</div>
+				<div id="row10" class="row">
+					<img id="slot10_1" class="slot" src="images/empty_slot.png" data-row = "10" data-column = "1">
+					<img id="slot10_2" class="slot" src="images/empty_slot.png" data-row = "10" data-column = "2">
+					<img id="slot10_3" class="slot" src="images/empty_slot.png" data-row = "10" data-column = "3">
+					<img id="slot10_4" class="slot" src="images/empty_slot.png" data-row = "10" data-column = "4">
+					<div id="result10" class="result" style="display:inline-block;">
+						<img id="r_slot10_1_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot10_1_2" class="r_slot" src="images/empty_slot.png" height="20px">
+						<br>
+						<img id="r_slot10_2_1" class="r_slot" src="images/empty_slot.png" height="20px">
+						<img id="r_slot10_2_2" class="r_slot" src="images/empty_slot.png" height="20px">
+					</div>
+					<button style="display: inline-block;">Check</button>
+				</div>
+			</div>
+		</div>
+			<div id="pearls" class="pearls">
+				<img id="black" height="45px" src="images/black.png">
+				<img id="teal" height="45px" src="images/teal.png">
+				<img id="yellow" height="45px" src="images/yellow.png">
+				<img id="red" height="45px" src="images/red.png">
+				<img id="white" height="45px" src="images/white.png">
+				<img id="green" height="45px" src="images/green.png">
+				<img id="orange" height="45px" src="images/orange.png">
+				<img id="purple" height="45px" src="images/purple.png">
+			</div>
+		</div>
+	<div class="text-container">
+		<div class="cont1">
+		<h1 id="title">mastermind</h1>
+		<div class="dash"></div>
+	</div>
+	<div class="cont2">
+		<p id="instructions">Your friend devised a secret combination.<br>Try to guess what it is!<br>For every correct color that is also in the right spot, you get one <strong>red</strong> pearl.<br>For every correct color that is not in the right spot, you get one <strong>white</strong> pearl.</p>
+	</div>
+	<div class="cont34">
+	<div class="cont3">
+		<div class="attempts"><span id="attempts">10</span> attempts left</div>
+	</div>
+	<div class="cont4">
+		<div id="timer">00:00</div>
+	</div>
+	<p id="state-info">Waiting for the pattern...</p>
+</div>
+
+	</div>	
+</div>
+</div>
+	<script src="javascripts/game_logic.js"></script>
+	</body>
+</html>
