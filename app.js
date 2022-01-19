@@ -115,4 +115,4 @@ wss.on("connection", function (ws) {
 });
 
 
-server.listen(process.end.PORT || port);
+server.listen(process.env.PORT || port);
