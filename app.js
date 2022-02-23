@@ -115,4 +115,4 @@ wss.on("connection", function (ws) {
 });
 
 
-server.listen(process.end.PORT || 3000);
+server.listen(process.env.PORT || 3000);
